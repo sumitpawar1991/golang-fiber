@@ -7,6 +7,7 @@ function App() {
       <Col xs="12 py-2">
         <h1 className="text-center">
             React application with fiber backend
+        
         </h1>
       </Col>
     </Row>
