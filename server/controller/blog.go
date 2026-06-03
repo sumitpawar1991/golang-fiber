@@ -23,7 +23,7 @@ func BlogList(c fiber.Ctx) error {
 
 	db.Find(&records)
 
-	context["blog records"] = records
+	context["blog_records"] = records
 	c.Status(200)
 	return c.JSON(context)
 
