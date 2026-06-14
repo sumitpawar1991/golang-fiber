@@ -37,7 +37,11 @@ function Blog() {
             React application with Fiber backend
           </h1>
         </Col>
-
+        
+          <Link to="add-blog" className="btn btn-primary mt-3">
+            Add New
+          </Link>
+        
         {apiData.length > 0 ? (
           apiData.map((record, index) => (
             <Col key={index} xs={4} className="py-5 box">

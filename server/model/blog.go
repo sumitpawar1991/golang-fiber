@@ -7,3 +7,8 @@ type Blog struct {
 
 	Post string `json:"post" gorm:"not null;column:post;size:255"`
 }
+
+type BlogRequest struct {
+	Title string `json:"title" validate:"required,min=3"`
+	Post  string `json:"post" validate:"required,min=10"`
+}

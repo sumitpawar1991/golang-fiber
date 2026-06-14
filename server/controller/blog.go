@@ -5,6 +5,7 @@ import (
 	"my-fiber-app/server/database"
 	"my-fiber-app/server/model"
 
+	import "github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v3"
 )
 
@@ -158,3 +159,53 @@ func BlogDelete(c fiber.Ctx) error {
 	c.Status(200)
 	return c.JSON(context)
 }
+
+// func BlogCreate(c fiber.Ctx) error {
+// 	var req BlogRequest
+
+// 	if err := c.Bind().Body(&req); err != nil {
+// 		return c.Status(400).JSON(fiber.Map{
+// 			"status":  "error",
+// 			"message": "Invalid request body",
+// 		})
+// 	}
+
+// 	if err := validate.Struct(req); err != nil {
+
+// 		errors := make(map[string]string)
+
+// 		for _, e := range err.(validator.ValidationErrors) {
+// 			switch e.Field() {
+// 			case "Title":
+// 				errors["title"] = "Title is required"
+// 			case "Post":
+// 				errors["post"] = "Post must be at least 10 characters"
+// 			}
+// 		}
+
+// 		return c.Status(400).JSON(fiber.Map{
+// 			"status": "error",
+// 			"errors": errors,
+// 		})
+// 	}
+
+// 	// Insert into database
+// 	_, err := DB.Exec(
+// 		"INSERT INTO blogs(title, post) VALUES (?, ?)",
+// 		req.Title,
+// 		req.Post,
+// 	)
+
+// 	if err != nil {
+// 		return c.Status(500).JSON(fiber.Map{
+// 			"status":  "error",
+// 			"message": err.Error(),
+// 		})
+// 	}
+
+// 	return c.JSON(fiber.Map{
+// 		"status":  "ok",
+// 		"message": "Blog created successfully",
+// 	})
+
+// }
