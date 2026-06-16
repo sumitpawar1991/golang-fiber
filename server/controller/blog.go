@@ -5,7 +5,7 @@ import (
 	"my-fiber-app/server/database"
 	"my-fiber-app/server/model"
 
-	import "github.com/go-playground/validator/v10"
+	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v3"
 )
 
@@ -61,35 +61,35 @@ func BlogDetail(c fiber.Ctx) error {
 
 }
 
-func BlogCreate(c fiber.Ctx) error {
+// func BlogCreate(c fiber.Ctx) error {
 
-	context := fiber.Map{
-		"status":  "ok",
-		"message": "Blog List",
-	}
+// 	context := fiber.Map{
+// 		"status":  "ok",
+// 		"message": "Blog List",
+// 	}
 
-	var record model.Blog
+// 	var record model.Blog
 
-	if err := c.Bind().Body(&record); err != nil {
-		log.Println("error in parsing the request")
-		context["status"] = "false"
-		context["message"] = "something went wrong"
-	}
+// 	if err := c.Bind().Body(&record); err != nil {
+// 		log.Println("error in parsing the request")
+// 		context["status"] = "false"
+// 		context["message"] = "something went wrong"
+// 	}
 
-	result := database.DBConn.Create(&record)
+// 	result := database.DBConn.Create(&record)
 
-	if result.Error != nil {
-		log.Println("Error in saving data")
-		context["status"] = "false"
-		context["message"] = "something went wrong. coudnt insert data in the table"
-	}
+// 	if result.Error != nil {
+// 		log.Println("Error in saving data")
+// 		context["status"] = "false"
+// 		context["message"] = "something went wrong. coudnt insert data in the table"
+// 	}
 
-	context["message"] = "Data inserted successfully"
-	context["data"] = record
-	c.Status(201)
-	return c.JSON(context)
+// 	context["message"] = "Data inserted successfully"
+// 	context["data"] = record
+// 	c.Status(201)
+// 	return c.JSON(context)
 
-}
+// }
 
 func BlogUpdate(c fiber.Ctx) error {
 
@@ -160,52 +160,53 @@ func BlogDelete(c fiber.Ctx) error {
 	return c.JSON(context)
 }
 
-// func BlogCreate(c fiber.Ctx) error {
-// 	var req BlogRequest
+func BlogCreate(c fiber.Ctx) error {
 
-// 	if err := c.Bind().Body(&req); err != nil {
-// 		return c.Status(400).JSON(fiber.Map{
-// 			"status":  "error",
-// 			"message": "Invalid request body",
-// 		})
-// 	}
+	var req model.BlogRequest
+	var validate = validator.New()
 
-// 	if err := validate.Struct(req); err != nil {
+	if err := c.Bind().Body(&req); err != nil {
+		return c.Status(400).JSON(fiber.Map{
+			"status":  "error",
+			"message": "Invalid request body",
+		})
+	}
 
-// 		errors := make(map[string]string)
+	if err := validate.Struct(req); err != nil {
 
-// 		for _, e := range err.(validator.ValidationErrors) {
-// 			switch e.Field() {
-// 			case "Title":
-// 				errors["title"] = "Title is required"
-// 			case "Post":
-// 				errors["post"] = "Post must be at least 10 characters"
-// 			}
-// 		}
+		errors := make(map[string]string)
 
-// 		return c.Status(400).JSON(fiber.Map{
-// 			"status": "error",
-// 			"errors": errors,
-// 		})
-// 	}
+		for _, e := range err.(validator.ValidationErrors) {
+			switch e.Field() {
+			case "Title":
+				errors["title"] = "Title is required"
+			case "Post":
+				errors["post"] = "Post must be at least 10 characters"
+			}
+		}
 
-// 	// Insert into database
-// 	_, err := DB.Exec(
-// 		"INSERT INTO blogs(title, post) VALUES (?, ?)",
-// 		req.Title,
-// 		req.Post,
-// 	)
+		return c.Status(400).JSON(fiber.Map{
+			"status": "error",
+			"errors": errors,
+		})
+	}
 
-// 	if err != nil {
-// 		return c.Status(500).JSON(fiber.Map{
-// 			"status":  "error",
-// 			"message": err.Error(),
-// 		})
-// 	}
+	blog := model.Blog{
+		Title: req.Title,
+		Post:  req.Post,
+	}
 
-// 	return c.JSON(fiber.Map{
-// 		"status":  "ok",
-// 		"message": "Blog created successfully",
-// 	})
+	// Save to database
+	if err := database.DBConn.Create(&blog).Error; err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"status":  "error",
+			"message": err.Error(),
+		})
+	}
 
-// }
+	return c.JSON(fiber.Map{
+		"status":  "ok",
+		"message": "Blog created successfully",
+	})
+
+}

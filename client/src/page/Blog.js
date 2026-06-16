@@ -8,7 +8,7 @@ function Blog() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const apiUrl = "http://localhost:8000";
+      const apiUrl = "http://localhost:8000/blog";
 
       try {
         const response = await axios.get(apiUrl);
@@ -46,10 +46,13 @@ function Blog() {
           apiData.map((record, index) => (
             <Col key={index} xs={4} className="py-5 box">
               <div className="title">
-                <Link to={`blog/${record.id}`}>{record.title}</Link>
+                <Link to={`show/${record.id}`}>{record.title}</Link>
                 </div>
               <div>
                 {record.post}
+              </div>
+              <div>
+                <Link to={`edit/${record.id}`}>Edit</Link>
               </div>
             </Col>
           ))
