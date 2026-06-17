@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"log"
 	"my-fiber-app/server/database"
 	"my-fiber-app/server/model"
@@ -40,6 +41,8 @@ func BlogDetail(c fiber.Ctx) error {
 	// return c.JSON(context)
 
 	id := c.Params("id")
+
+	//fmt.Println(id)
 
 	var record model.Blog
 
@@ -136,6 +139,13 @@ func BlogDelete(c fiber.Ctx) error {
 
 	id := c.Params("id")
 
+	fmt.Println(id)
+
+	return c.JSON(fiber.Map{
+		"status": "ok",
+		"id":     id,
+	})
+
 	var record model.Blog
 
 	database.DBConn.First(&record, id)
@@ -209,4 +219,11 @@ func BlogCreate(c fiber.Ctx) error {
 		"message": "Blog created successfully",
 	})
 
+}
+
+func BlogEdit(c fiber.Ctx) error {
+	return c.JSON(fiber.Map{
+		"status":  "ok",
+		"message": "checking",
+	})
 }

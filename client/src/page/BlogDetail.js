@@ -10,7 +10,7 @@ const BlogDetail = () =>{
 
   useEffect(() => {
       const fetchData = async () => {
-        const apiUrl = "http://localhost:8000/"+params.id;
+        const apiUrl = "http://localhost:8000/blog/show/"+params.id;
   
         try {
           const response = await axios.get(apiUrl);

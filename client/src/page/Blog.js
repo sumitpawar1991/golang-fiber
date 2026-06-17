@@ -54,6 +54,9 @@ function Blog() {
               <div>
                 <Link to={`edit/${record.id}`}>Edit</Link>
               </div>
+              <div>  
+              <Link to={`delete/${record.id}`}>delete</Link>
+              </div>
             </Col>
           ))
         ) : (
