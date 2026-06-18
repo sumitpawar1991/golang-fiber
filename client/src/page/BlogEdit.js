@@ -69,7 +69,7 @@ useEffect(() => {
         e.preventDefault();
 
         try {
-            const response = await axios.post(
+            const response = await axios.put(
                 "http://localhost:8000/blog/edit/"+params.id,
                 formData
             );
