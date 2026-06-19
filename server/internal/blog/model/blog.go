@@ -1,6 +1,6 @@
 package model
 
-import "gorm.io/gorm"
+import "time"
 
 // type Blog struct {
 // 	ID uint `json:"id" gorm:"primaryKey"`
@@ -16,8 +16,9 @@ import "gorm.io/gorm"
 // }
 
 type Blog struct {
-	gorm.Model
-
-	Title string `gorm:"size 255;not null"`
-	Post  string `gorm:"type:text;not null`
+	ID        uint   `gorm:"primaryKey"`
+	Title     string `gorm:"size:255;not null"`
+	Post      string `gorm:"type:text;not null"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
 }
