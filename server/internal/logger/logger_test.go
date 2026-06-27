@@ -1,12 +1,19 @@
 package logger
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestNewLogger(t *testing.T) {
 
-	log := new()
+	t.Run("should create a new logger with default config", func(t *testing.T) {
+		log := New(Config{
+			Level: "info",
+		})
 
-	if log == nil {
-		t.Fatal("expected logger instance,got nil")
-	}
+		if log == nil {
+			t.Error("expected logger to be created, got nil")
+		}
+
+	})
 }
