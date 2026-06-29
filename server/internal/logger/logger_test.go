@@ -17,3 +17,19 @@ func TestNewLogger(t *testing.T) {
 
 	})
 }
+
+func TestLogger_Info(t *testing.T) {
+
+	t.Run("should log info message", func(t *testing.T) {
+
+		//	var buf bytes.Buffer
+
+		log := New(Config{
+			Level: "debug",
+		})
+
+		if log == nil {
+			t.Error("expected logger to be created, got nil")
+		}
+	})
+}
