@@ -25,3 +25,58 @@ Development Process
 Testing
 - Unit Tests
 - Integration Tests
+
+
+
+For concept
+
+
+Story
+
+↓
+
+Requirement
+
+↓
+
+Acceptance Criteria
+
+↓
+
+Folder Structure
+
+↓
+
+Git Branch
+
+↓
+
+RED
+
+↓
+
+GREEN
+
+↓
+
+REFACTOR
+
+↓
+
+Review
+
+↓
+
+Commit
+
+↓
+
+Push
+
+↓
+
+PR
+
+↓
+
+Merge

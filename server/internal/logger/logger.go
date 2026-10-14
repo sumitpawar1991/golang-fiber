@@ -2,7 +2,7 @@ package logger
 
 import (
 	"io"
-	"log"
+	"os"
 	"strings"
 	"sync"
 )
@@ -25,7 +25,8 @@ var levelNames = map[Level]string{
 
 // config hold logger information
 type Config struct {
-	Level string
+	Level  string
+	Output io.Writer
 }
 
 type logger struct {
@@ -35,15 +36,29 @@ type logger struct {
 	fields map[string]interface{}
 }
 
-func New(cfg Config) *log.Logger {
+type Logger interface {
+	Debug(msg string, args ...interface{})
+	Info(msg string, args ...interface{})
+	Warn(msg string, args ...interface{})
+	Error(msg string, args ...interface{})
+	With(args ...interface{}) Logger
+}
 
-	// return log.New(
-	// 	os.Stdout,
-	// 	"[APP]",
-	// 	log.Ldate|log.Ltime|log.Lshortfile,
-	// )
-
+func New(cfg Config) Logger {
+	// Parse log level
 	level := parseLevel(cfg.Level)
+
+	// Set default output
+	output := cfg.Output
+	if output == nil {
+		output = os.Stdout
+	}
+
+	return &logger{
+		level:  level,
+		output: output,
+		fields: make(map[string]interface{}),
+	}
 }
 
 func parseLevel(level string) Level {

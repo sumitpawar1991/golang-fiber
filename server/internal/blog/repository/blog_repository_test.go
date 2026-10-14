@@ -1,40 +1,53 @@
 package repository
 
 import (
-	blogModel "my-fiber-app/server/internal/blog/model"
-	"my-fiber-app/server/internal/database"
-	"my-fiber-app/server/internal/database/postgres"
-	"my-fiber-app/server/test/helper"
-
+	"regexp"
 	"testing"
+
+	"github.com/DATA-DOG/go-sqlmock"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
-func TestCreateBlog(t *testing.T) {
-
-	cfg := helper.TestPostgresConfig()
-
-	db, err := postgres.Connect(cfg)
+func TestBlogRepository_ListBlogs(t *testing.T) {
+	sqlDB, mock, err := sqlmock.New()
 
 	if err != nil {
-		t.Fatalf("db connection failed: %v", err)
+		t.Fatalf("Failed to create sql mock:%v", err)
 	}
 
-	err = database.Migrate(db)
+	defer sqlDB.Close()
+
+	db, err := gorm.Open(postgres.New(postgres.Config{
+		Conn: sqlDB,
+	}), &gorm.Config{})
 
 	if err != nil {
-		t.Fatalf("migration failed: %v", err)
+		t.Fatalf("failed to open GORM:%v", err)
 	}
 
-	repo := NewBlogRepository(nil)
+	columns := []string{"id", "title", "content", "created_at", "updated_at"}
 
-	blog := &blogModel.Blog{
-		Title: "Test Blog",
-		Post:  "This is test content",
-	}
+	mock.ExpectQuery(regexp.QuoteMeta(`SELECT * FROM "blogs"`)).
+		WillReturnRows(sqlmock.NewRows(columns))
 
-	err = repo.Create(blog)
+	repo := NewBlogRepository(db)
+
+	records, err := repo.ListBlogs()
 
 	if err != nil {
-		t.Fatalf("expected no error got %v", err)
+		t.Fatalf("expected no error,got %v", err)
+	}
+
+	if records == nil {
+		t.Fatal("expected empty slice , got nil")
+	}
+
+	if len(records) != 0 {
+		t.Fatalf("expected 0 records , got %d", len(records))
+	}
+
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("unfulfilled SQL expections: %v", err)
 	}
 }

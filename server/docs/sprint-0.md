@@ -21,6 +21,17 @@ Migration
 [ ] Story 5
 Logger
 
+
+│
+├── Story 5.1 Basic Logger
+├── Story 5.2 Log Levels
+├── Story 5.3 Console Formatting
+├── Story 5.4 File Logging
+├── Story 5.5 Rotation
+├── Story 5.6 Fiber Middleware
+├── Story 5.7 Request ID
+└── Story 5.8 Structured JSON Logs
+
 [ ] Story 6
 Response Package
 

@@ -1,23 +1,11 @@
 package model
 
-import "gorm.io/gorm"
-
-// type Blog struct {
-// 	ID uint `json:"id" gorm:"primaryKey"`
-
-// 	Title string `json:"title" gorm:"not null;column:title;size:255"`
-
-// 	Post string `json:"post" gorm:"not null;column:post;size:255"`
-// }
-
-// type BlogRequest struct {
-// 	Title string `json:"title" validate:"required,min=3"`
-// 	Post  string `json:"post" validate:"required,min=10"`
-// }
+import "time"
 
 type Blog struct {
-	gorm.Model
-
-	Title string `gorm:"size 255;not null"`
-	Post  string `gorm:"type:text;not null`
+	ID        uint      `gorm:"primarykey" json:"id"`
+	Title     string    `gorm:"not null" json:"title"`
+	Content   string    `gorm:"not null" json:"content"`
+	CreatedAt time.Time `json:"created_at`
+	UpdatedAt time.Time `json:"updated_at"`
 }
